@@ -33,18 +33,21 @@ function Circle(props){
         return [parseFloat(coords[0]),parseFloat(coords[1])];
     }
     function animationStyle(steps){
+        colorVal.current = colorVal.current + .1;//(50*Math.sin(steps.current*.05));
         return {transform:`${microPathCompute(x.current,y.current, x1.current,
                                               y1.current, steps=steps,
                                               transitionDuration)}`,
                 transition: '.01s',
+                easing:'true',
                 opacity:'0',
+                padding:'5px',
                 stroke:`hsl(${colorVal.current.toString()},100%,70%)`}
     }
 
     const [isIntersecting, setIntersecting] = useState(false)
     const { ref, inView, entry } = useInView({
         /* Optional options */
-        threshold: .99,
+        threshold: 1.00,
         trackVisibility: true,
         delay:100,
         initialInView: true
@@ -52,14 +55,14 @@ function Circle(props){
 
          
     const transitionDuration = '10s';
-    const colorVal = useRef(Math.floor(Math.random() * (305 - 55 +1)) + 55);
+    const colorVal = useRef(190);//Math.floor(Math.random() * (305 - 55 +1)) + 55);
     const steps = useRef(1);
     const stepsOffset = useRef(steps.current +Math.floor(Math.random()*100));
     const x = useRef(invertPath()[0]);
     const y = useRef(invertPath()[1]);
     const x1 = useRef(null); // When we change path it'll be between x and x1
     const y1 = useRef(null); // When we change path it'll be between y and y1
-
+    const lastBorder = useRef(null);
     function borderPathChange(x,y,x1,y1, steps){
         //console.log(x1);
         // Get direction of wall
@@ -68,13 +71,13 @@ function Circle(props){
             Math.abs(height - entry.boundingClientRect.y), Math.abs(width - entry.boundingClientRect.x)]
         let direction = distances.indexOf(Math.min(...distances));
         // Have to get original theta, magnitude
-        if(x1.current===null){
+        if(x1.current===null || (steps.current > 100 & (lastBorder.current != null & lastBorder.current !=direction))){
             //console.log("testing");
             let magnitude = Math.sqrt(Math.pow(x.current,2) + Math.pow(y.current,2));
             //let theta = Math.arcsin(y/magnitude)
 
-            // Set x1 and y1 as the current location of the box
-            x1.current = entry.boundingClientRect.x + 25; // change this to radius later!!
+            // Set x1 and y1 as the current loåcation of the box
+            x1.current = entry.boundingClientRect.x + 5; // change this to radius later!!
             y1.current = entry.boundingClientRect.y + 25;
 
             // Depending on the wall bounced off of, reverse x or y direction
@@ -86,12 +89,8 @@ function Circle(props){
                 y.current = -y.current;
             }
             
-            // Get the direction of wall hit to new
-            let theta = Math.atan( y.current/x.current);//(y.current - y1.current)/(x.current - x1.current));
-            console.log(x.current,y.current);
-            //x.current = x1.current - x.current; // x1.current - Math.cos(theta)*magnitude;
-            //y.current = y1.current - y.current;//y1.current - Math.sin(theta)*magnitude;
-            
+            colorVal.current = 190;
+            lastBorder.current = direction;
             steps.current = 1;
             
         }
