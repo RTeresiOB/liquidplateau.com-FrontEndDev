@@ -337,6 +337,11 @@ svgLines{
   .current{
     text-decoration: underline;
   }
+
+  .drawing{
+    width:50%;
+    float:right;
+  }
   
   img{
     padding: 20px;
