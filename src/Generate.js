@@ -192,7 +192,7 @@ componentDidMount(){
     function sleep (time) {
         return new Promise((resolve) => setTimeout(resolve, time));
       }
-    this.setState({ JSX: <SvgLines animate={ true } stagger={5000} duration={ 30000 }>
+    this.setState({ JSX: <SvgLines animate={ true } stagger={5000} duration={ 32000 }>
         <svg className="home"> {this.nodes} </svg> 
         </SvgLines> });
 
