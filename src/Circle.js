@@ -86,8 +86,8 @@ function Circle(props){
             //let theta = Math.arcsin(y/magnitude)
 
             // Set x1 and y1 as the current location of the box
-            x1.current = entry.boundingClientRect.x;
-            y1.current = entry.boundingClientRect.y;
+            x1.current = entry.boundingClientRect.x + 25; // change this to radius later!!
+            y1.current = entry.boundingClientRect.y + 25;
 
             // Depending on the wall bounced off of, reverse x or y direction
             if(direction % 2){
