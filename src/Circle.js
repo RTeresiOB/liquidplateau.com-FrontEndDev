@@ -20,20 +20,8 @@ function Circle(props){
             microX = x/ratio;
             microY = y/ratio;
         } else{
-
-            microX = (x1 - props.x0) + ((x - (x1 - props.x0))/ratio);
-            microY = (y1 - props.y0) + ((y - (y1 - props.y0))/ratio);
-            /*
-            if(props.id==1){
-                console.log("start");
-                console.log(x1);
-                console.log(y1);
-                console.log(x);
-                console.log(y);
-                console.log(microX);
-                console.log(microY);
-            }
-            */
+            microX = (x1 - props.x0) + (x/ratio);
+            microY = (y1 - props.y0) + (y/ratio);
         }
         return 'translate('+microX+'px,'+microY+'px)';
     }
@@ -78,7 +66,7 @@ function Circle(props){
         const {width, height} = getWindowDimensions(); // Window size
         let distances = [entry.boundingClientRect.y, entry.boundingClientRect.x,
             Math.abs(height - entry.boundingClientRect.y), Math.abs(width - entry.boundingClientRect.x)]
-        let direction = distances.indexOf(Math.min(...distances));//*Math.PI / 2;
+        let direction = distances.indexOf(Math.min(...distances));
         // Have to get original theta, magnitude
         if(x1.current===null){
             //console.log("testing");
@@ -90,6 +78,8 @@ function Circle(props){
             y1.current = entry.boundingClientRect.y + 25;
 
             // Depending on the wall bounced off of, reverse x or y direction
+            console.log(direction);
+            console.log(x.current,y.current);
             if(direction % 2){
                 x.current = -x.current;
             }  else{
@@ -97,11 +87,13 @@ function Circle(props){
             }
             
             // Get the direction of wall hit to new
-            let theta = Math.atan((y.current - y1.current)/
-                                  (x.current - x1.current));
-            x.current = x1.current - Math.cos(theta)*magnitude;
-            y.current = y1.current - Math.sin(theta)*magnitude;
+            let theta = Math.atan( y.current/x.current);//(y.current - y1.current)/(x.current - x1.current));
+            console.log(x.current,y.current);
+            //x.current = x1.current - x.current; // x1.current - Math.cos(theta)*magnitude;
+            //y.current = y1.current - y.current;//y1.current - Math.sin(theta)*magnitude;
+            
             steps.current = 1;
+            
         }
         return [x.current, x1.current, y.current, y1.current, steps.current];
       }
@@ -128,17 +120,10 @@ function Circle(props){
 
     return(
         <>
-            <path id = {props.id} ref={ref} /*{ref={callBackRef}}*/  /*'black'*/ stroke-width= {2.2+(.8*Math.sin(stepsOffset.current))}  fill="white" d= {props.d} 
+            <path id = {props.id} ref={ref} /*stroke='black'*/ stroke-width= {2.2+(.8*Math.sin(stepsOffset.current))}  fill="white" d= {props.d} 
             style={style} />
         </>
 )
 }
 
 export default Circle;
-
-/*<animateMotion 
-                id = {props.id}
-                dur="50s"
-                begin = "2s"
-                fill="freeze"
-                path={props.path()} /> */
