@@ -1,12 +1,11 @@
 import './App.css';
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
-
+import Home from './Home';
+import About from './About';
 const App = () => (
   <div className='app'>
-     <Navigation />
-    <h1> Welcome to the personal website of Kaitlyn Renee Fox. </h1>
-    <h2> This is a single page application built using React. </h2>
+    <Navigation />
     <Main />
   </div>
 );
@@ -14,33 +13,70 @@ const App = () => (
 const Navigation = () => (
   <nav>
     <ul>
-      <li><NavLink exact activeClassName="current" to='/'>Home</NavLink></li>
-      <li><NavLink exact activeClassName="current" to='/about'>About</NavLink></li>
-      <li><NavLink exact activeClassName="current" to='/contact'>Contact</NavLink></li>
+      <li id="homepage"><NavLink exact activeClassName="current" to='/'>home</NavLink></li>
+      <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'>about</NavLink></li>
+      <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'>contact</NavLink></li>
     </ul>
   </nav>
 );
 
-const Home = () => (
-  <div className='home'>
-    <img src = "assets/attention.gif"/> 
-  </div>
-);
+class Contact extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      message: '',
+      mailsent: false,
+      error: null
+    }
 
-const About = () => (
-  <div className='about'>
-    <h1>About Me</h1>
-    <p>Ipsum dolor dolorem consectetur est velit fugiat. Dolorem provident corporis fuga saepe distinctio ipsam? Et quos harum excepturi dolorum molestias?</p>
-    <p>Ipsum dolor dolorem consectetur est velit fugiat. Dolorem provident corporis fuga saepe distinctio ipsam? Et quos harum excepturi dolorum molestias?</p>
-  </div>
-);
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
 
-const Contact = () => (
-  <div className='contact'>
-    <h1>Contact Me</h1>
-    <p>You can reach me via email: <strong>hello@example.com</strong></p>
+ handleFormSubmit( event ) {
+  event.preventDefault();
+  console.log(this.state);
+  // Also clear the fields after submission
+}
+
+  render() {
+    return (
+
+    <div className='contact personal'>
+    <p> shoot me an email: robert.teresi@yale.edu</p>
+    <p> or write me a note: </p>
+    
+    <form action="#" >
+
+    <label>Name</label>
+  <input type=" text" id="name" name="name" placeholder="name..."
+    value={this.state.name}
+    onChange={e => this.setState({ name: e.target.value })}
+  />
+
+
+  <label>Email</label>
+  <input type="email" id="email" name="email" placeholder="email..."
+    value={this.state.email}
+    onChange={e => this.setState({ email: e.target.value })}
+  />
+
+
+  <label>Message</label>
+  <textarea id="message" name="message" placeholder="write something.."
+    onChange={e => this.setState({ message: e.target.value })}
+    value={this.state.message}
+  ></textarea>
+
+    <input id = "butt" type="submit" onClick={e => this.handleFormSubmit(e)} value="Submit" />
+  </form >
+  
   </div>
-);
+  );
+}
+}
+
 
 const Main = () => (
   <Switch>
