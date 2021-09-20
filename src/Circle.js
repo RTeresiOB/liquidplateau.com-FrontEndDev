@@ -49,7 +49,8 @@ function Circle(props){
                                               y1.current, steps=steps,
                                               transitionDuration)}`,
                 transition: '.01s',
-                opacity:'0'}
+                opacity:'0',
+                stroke:`hsl(${colorVal.current.toString()},100%,70%)`}
     }
 
     const [isIntersecting, setIntersecting] = useState(false)
@@ -63,6 +64,7 @@ function Circle(props){
 
          
     const transitionDuration = '10s';
+    const colorVal = useRef(Math.floor(Math.random() * (305 - 55 +1)) + 55);
     const steps = useRef(1);
     const stepsOffset = useRef(steps.current +Math.floor(Math.random()*100));
     const x = useRef(invertPath()[0]);
@@ -126,7 +128,7 @@ function Circle(props){
 
     return(
         <>
-            <path id = {props.id} ref={ref} /*{ref={callBackRef}}*/ stroke = 'black' stroke-width= {.5+(.5*Math.sin(stepsOffset.current))}  fill="white" d= {props.d} 
+            <path id = {props.id} ref={ref} /*{ref={callBackRef}}*/  /*'black'*/ stroke-width= {2.2+(.8*Math.sin(stepsOffset.current))}  fill="white" d= {props.d} 
             style={style} />
         </>
 )
