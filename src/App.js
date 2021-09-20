@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { NavLink, Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import About from './About';
+import Resume from './Resume';
 const App = () => (
   <div className='app'>
     <Navigation />
@@ -16,6 +17,7 @@ const Navigation = () => (
       <li id="homepage"><NavLink exact activeClassName="current" to='/'>home</NavLink></li>
       <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'>about</NavLink></li>
       <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'>contact</NavLink></li>
+      <li id="resumepage"><NavLink exact activeClassName="current" to='/resume'>resume</NavLink></li>
     </ul>
   </nav>
 );
@@ -83,6 +85,7 @@ const Main = () => (
     <Route exact path='/' component={Home}></Route>
     <Route exact path='/about' component={About}></Route>
     <Route exact path='/contact' component={Contact}></Route>
+    <Route exact path='/resume' component={Resume}></Route>
   </Switch>
 );
 
