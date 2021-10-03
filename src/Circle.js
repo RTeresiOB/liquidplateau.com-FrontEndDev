@@ -13,9 +13,11 @@ function Circle(props){
     // It receives the length of the animation and the desired length
     function microPathCompute(x,y, x1, y1, steps, transitionDuration, microPath = 10){
         let ratio = (parseFloat(transitionDuration.slice(0,2))*1000) / (microPath*steps);
+
         var microX = null;
         var microY = null;
         if(x1===null){
+            console.log("ID: ", props.id, "Step: ", steps," x1===null");
             // Since translations defined from origin, we can just take a ratio
             microX = x/ratio;
             microY = y/ratio;
@@ -23,6 +25,11 @@ function Circle(props){
             microX = (x1 - props.x0) + (x/ratio);
             microY = (y1 - props.y0) + (y/ratio);
         }
+        /*
+        console.log("x: ", x, " y: ",y, " ratio: ", ratio);
+        console.log("microX: ", microX, " microY: ", microY);
+        console.log("ID: ", props.id, ", ", 'translate('+microX+'px,'+microY+'px)');
+        */
         return 'translate('+microX+'px,'+microY+'px)';
     }
     // Function to get coordinates from props.path
@@ -64,11 +71,12 @@ function Circle(props){
     const y1 = useRef(null); // When we change path it'll be between y and y1
     const lastBorder = useRef(null);
     function borderPathChange(x,y,x1,y1, steps){
+        console.log("ID: ", props.id, " steps: ", steps.current, " PATH CHANGE");
         //console.log(x1);
         // Get direction of wall
         const {width, height} = getWindowDimensions(); // Window size
         let distances = [entry.boundingClientRect.y, entry.boundingClientRect.x,
-            Math.abs(height - entry.boundingClientRect.y), Math.abs(width - entry.boundingClientRect.x)]
+            Math.abs(height - (entry.boundingClientRect.y + entry.boundingClientRect.height)), Math.abs(width - (entry.boundingClientRect.x + entry.boundingClientRect.width))]
         let direction = distances.indexOf(Math.min(...distances));
         // Have to get original theta, magnitude
         if(x1.current===null || (steps.current > 100 & (lastBorder.current != null & lastBorder.current !=direction))){
@@ -78,11 +86,11 @@ function Circle(props){
 
             // Set x1 and y1 as the current loåcation of the box
             x1.current = entry.boundingClientRect.x + 5; // change this to radius later!!
-            y1.current = entry.boundingClientRect.y + 25;
+            y1.current = entry.boundingClientRect.y + 30;
 
             // Depending on the wall bounced off of, reverse x or y direction
-            console.log(direction);
-            console.log(x.current,y.current);
+            //console.log(direction);
+            //console.log(x.current,y.current);
             if(direction % 2){
                 x.current = -x.current;
             }  else{
@@ -98,15 +106,17 @@ function Circle(props){
       }
 
     const [style, setStyle] = useState(animationStyle(steps.current));
+    
     useEffect(() => setTimeout(()=> {steps.current += + 1;
                                     //stepsOffset.current += 1;
                                          setStyle(animationStyle(steps.current));},30), [style]);
-    
+
         try{
-            if(inView){
-            //console.log(entry);
+            if(inView | steps.current < 40){
             ;
             } else{
+                console.log("Steps: ", steps.current);
+                debugger;
                 //console.log(x.current);
                 [x.current, x1.current, y.current, y1.current, steps.current] = borderPathChange(x,y,x1,y1,steps);
                 //console.log(x.current);
@@ -115,8 +125,15 @@ function Circle(props){
         catch{
             ;
         }
+/*
+        console.log("ID: ", props.id," , ", style['transform'],
+                    'X: ', x.current, " Y: ", y.current);
+                    */
           // Function
-
+          if(steps.current > 100){
+            debugger;
+          }
+ 
     return(
         <>
             <path id = {props.id} ref={ref} /*stroke='black'*/ stroke-width= {2.2+(.8*Math.sin(stepsOffset.current))}  fill="white" d= {props.d} 
