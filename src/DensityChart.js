@@ -6,9 +6,8 @@ var margin = ({top: 20, right: 30, bottom: 30, left: 40});
 var bins = 5;
 var bandwidth = 7.0;
 
-var data = [79,54, 74, 62, 85, 55, 88, 85, 51, 85, 54, 84, 78, 47, 83, 52, 62, 84, 52, 79,30,1,2,3,4,5,6,7,8,9,3,4,6,4,5,3,4,7,7,5,233,4,6,5];
+var data = [79,54, 74, 62, 85, 55, 88, 85, 51, 85, 54, 84, 78, 47, 83, 52, 62, 84, 52, 79,1,2,3,4,5,6,7,8,9,3,4,6,4,5,3,4,7,7,5,233,4,6,5];
 
-console.log(Math.max(...[1,2,3,4]));
   function kde(kernel, thresholds, data) {
     return thresholds.map(t => [t, d3.mean(data, d => kernel(t - d))]);
   }
@@ -65,24 +64,29 @@ console.log(Math.max(...[1,2,3,4]));
         .style("-webkit-tap-highlight-color", "transparent")
         .on("mousemove touchmove", function(event, d){moved(event, d)});
 
-    svg.append("g")
+    var rule = svg.append("g")
         .append("line")
           .attr("y1", height)
           .attr("y2", 0)
           .attr("stroke", "black");
 
-        function update(point) {
-            console.log(point);
-            svg.append("g")
-        .append("line")
-          .attr("y1", height)
-          .attr("y2", 0)
-          .attr("stroke", "black")
-          .attr("transform", `translate(${x(point) + 0.5},0)`);
+    function update(point, event) {
+            var newnode = d3.select(node);
+            var newrule = newnode.select('g')
+                .append("line")
+              .attr("y1", height)
+              .attr("y2", 0)
+              .attr("stroke", "black")
+              .attr('transform',event.transform);
+            //var transform = event.transform;
+	        //newrule.attr("transform", function(d) {
+             //   return "translate(" + transform.applyX(point) + ",0px)";
+	 // });;
+            //rule.attr("transform", `translate(${x(point) + 0.5},0)`);
             //svg.property("value", point).dispatch("input");
           }
         function moved(event) {
-            update(x.invert(d3.pointer(event, this)[0])); // Pointer works, translate not added
+            update(x.invert(d3.pointer(event, this)[0]), event); // Pointer works, translate not added
            // d3.event.preventDefault();
           }
     

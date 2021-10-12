@@ -4,7 +4,8 @@ import { NavLink, Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import About from './About';
 import Resume from './Resume';
-import Project from './TwitterDash';
+import Dashboard from './Dashboard/Dashboard'
+
 const App = () => (
   <div className='app'>
     <Navigation />
@@ -82,13 +83,14 @@ class Contact extends Component {
 }
 
 
+
 const Main = () => (
   <Switch>
     <Route exact path='/' component={Home}></Route>
     <Route exact path='/about' component={About}></Route>
     <Route exact path='/contact' component={Contact}></Route>
-    <Route exact path='/Project' component={Project}></Route>
-    <Route exact path='/resume' component={Resume}></Route>
+    <Route exact path='/Project' render={(props) => <Dashboard {...props} />} /> 
+    <Route exact path='/resume'  component={Resume}></Route>
   </Switch>
 );
 
