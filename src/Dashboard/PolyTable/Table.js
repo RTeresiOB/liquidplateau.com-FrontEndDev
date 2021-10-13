@@ -1,5 +1,6 @@
 import {useTable, useSortBy} from "react-table";
 import React, {useMemo} from "react";
+import ReactRow from "./ReactRow";
 function Table({ columns, data }) {
     // Use the state and functions returned from useTable to build your UI
     const {
@@ -15,7 +16,6 @@ function Table({ columns, data }) {
         useSortBy
     )
   //            {headerGroup.headers.map(column => { if (column.id === 'Ideology') column.sortType = floatSort;})}
-
 const floatSort = useMemo(() => {
     const sortFunc = (a, b) => {
       const aVal = parseFloat(a.values.Ideology);
@@ -50,11 +50,11 @@ const floatSort = useMemo(() => {
           {rows.map((row, i) => {
             prepareRow(row)
             return (
-              <tr {...row.getRowProps()}>
+              <ReactRow {...row.getRowProps()} cells={row.cells}>
                 {row.cells.map(cell => {
                   return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                 })}
-              </tr>
+              </ReactRow>
             )
           })}
         </tbody>
