@@ -45,7 +45,6 @@ export default function PolyTable(data=null, props){
                 }
             }
             `
-    console.log(data);
     return(
         <Styles>
         <Table
@@ -60,8 +59,8 @@ export default function PolyTable(data=null, props){
               },
               {
                 Header: "Ideology Score",
-                id: "ideology",
-                accessor: "Ideology"
+                id: "Ideology",
+                accessor: d => Number(d.Ideology).toFixed(2)
               }
             ]
           }
