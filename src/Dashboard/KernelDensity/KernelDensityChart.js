@@ -12,6 +12,7 @@ const KernelDensityChart = ({ data=null, nthresholds=55, dimensions = {} }) => {
   const { width, height, margin = {} } = dimensions;
   const svgWidth = width + margin.left + margin.right;
   const svgHeight = height + margin.top + margin.bottom;
+  const fullData = data;
   data = data.map(d=> parseFloat(d.Ideology));
   const controller = useController({ data, nthresholds, width, height });
   const { yTickFormat, xScale, yScale, yScaleForAxis, binData } = controller; // need to get controller working for scales
@@ -40,6 +41,7 @@ const KernelDensityChart = ({ data=null, nthresholds=55, dimensions = {} }) => {
           type="vertical"
           className="vertRule"
           scale={xScale}
+          fullData={fullData}
           transform={`translate(10, ${height - height/4.2})`}
           hoverCoord={mousePosition.x ? (mousePosition.x) : -999}
           height={height}
