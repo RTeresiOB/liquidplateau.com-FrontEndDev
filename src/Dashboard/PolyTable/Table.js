@@ -1,5 +1,5 @@
-import {useTable} from "react-table";
-import React from "react";
+import {useTable, useSortBy} from "react-table";
+import React, {useMemo} from "react";
 function Table({ columns, data }) {
     // Use the state and functions returned from useTable to build your UI
     const {
@@ -11,16 +11,37 @@ function Table({ columns, data }) {
     } = useTable({
       columns,
       data,
-    })
-  
+    },
+        useSortBy
+    )
+  //            {headerGroup.headers.map(column => { if (column.id === 'Ideology') column.sortType = floatSort;})}
+
+const floatSort = useMemo(() => {
+    const sortFunc = (a, b) => {
+      const aVal = parseFloat(a.values.Ideology);
+      const bVal = parseFloat(b.values.Ideology);
+      return aVal < bVal ? -1 : 1;
+    };
+    return sortFunc;
+  });
+
     // Render the UI for your table
     return (
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map(column => { if (column.id === 'Ideology') column.sortType = floatSort;})}
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}
+                    <span>
+                        {column.isSorted
+                        ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                        : ''}
+                  </span>
+                  </th>
               ))}
             </tr>
           ))}
