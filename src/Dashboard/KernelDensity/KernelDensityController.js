@@ -18,7 +18,7 @@ const useController = ({ data, nthresholds, width, height }) => {
     return x => Math.abs(x /= bandwidth) <= 1 ? 0.75 * (1 - x * x) / bandwidth : 0;
   }
   const xMin = useMemo(
-    () => {console.log(data); return d3.min(data);});
+    () => { return d3.min(data);});
   const xMax = useMemo(
     () => d3.max(data));
     /*, ({ items }) => d3.max(items, ({ date }) => date)),
