@@ -22,18 +22,19 @@ export default function Dashboard(props) {
         }
       };
 
-    const selectPoliticanReducer = (idx) =>
+    const selectPoliticanReducer = (currentState, idx) =>
       {
-          return {selectedPolitician:idx};
+          return {"selectedPolitician":idx};
       }
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState(null);
-    const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{selectedPolitician:null});
+    const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{"selectedPolitician":null});
     if(data ===null){
         readPolData("data/scores.csv", false).then((result) => {return(result);}).then((result) =>
          {setData(result);});
     }
+    console.log("SelectedPoliticianIdx:",selectedPolitician.selectedPolitician);
     useEffect(() => {
         if((data instanceof Promise) | (data === null)){
             console.log("1");
@@ -47,7 +48,8 @@ export default function Dashboard(props) {
         console.log(setSelectedPolitician)
         return(
             <>
-                <SeletedPoliticianDispatch.Provider value={setSelectedPolitician}>
+                <SeletedPoliticianDispatch.Provider value={{"setter":setSelectedPolitician,
+                                                            "value": selectedPolitician}}>
                     <KernelDensityChart data={data} dimensions={kernelDimensions} 
                                         politician={selectedPolitician} />
                     <PolyTable  data={data}

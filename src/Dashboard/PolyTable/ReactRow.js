@@ -14,7 +14,7 @@ export default function ReactRow(props){
                 var colVal = 1 - ((2 + parseFloat(cell.value))/4)
                 setColor(d3.interpolateRdBu(colVal));
                 setTextColor("white");
-                SeletedPoliticianDispatchContext(parseInt(cell.getCellProps().key.match(/\d+/)[0]));
+                SeletedPoliticianDispatchContext.setter(parseInt(cell.getCellProps().key.match(/\d+/)[0]));
                 //SelectedPoliticianDispatchContext (parseInt(cell.getCellProps().key.match(/\d+/)[0]));
             }
         });
