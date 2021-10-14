@@ -12,13 +12,13 @@ export const  SeletedPoliticianDispatch = React.createContext(null);
 export default function Dashboard(props) {
     // Define dimensions for kernelDensity (this will have to be scaled by window dimensions)
     const kernelDimensions = {
-        width: 800,
-        height: 500,
+        width: 500,
+        height: 300,
         margin: {
           top: 30,
-          right: 30,
+          right: 100,
           bottom: 30,
-          left: 50
+          left: 100
         }
       };
 
@@ -61,8 +61,12 @@ export default function Dashboard(props) {
             <>
                 <SeletedPoliticianDispatch.Provider value={{"setter":setSelectedPolitician,
                                                             "value": selectedPolitician}}>
+                    <div>
                     <KernelDensityChart data={data} dimensions={kernelDimensions} />
+                    <KernelDensityChart data={data} dimensions={kernelDimensions} />
+                    </div>
                     <MemoizedPolyTable  data={data}/>
+                    
                 </SeletedPoliticianDispatch.Provider>
             </>);
     } else{
