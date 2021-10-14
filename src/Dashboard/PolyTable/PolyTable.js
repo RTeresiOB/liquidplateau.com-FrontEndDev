@@ -6,7 +6,6 @@ function PolyTable(data=null, props){
     const Styles = styled.div`
             padding: 1rem;
             width: 100%;
-            height: 200px;
             min-width: 700px;
             overflow-y: scroll;
             table {
