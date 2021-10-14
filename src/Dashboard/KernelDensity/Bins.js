@@ -8,7 +8,7 @@ const Bins = ({
     
     const handleOpacity = () =>
     {}
-    
+
     // Need to make a child for each bin
     const Bins = binData.map((bin, d) =>
     <rect x={xScale(bin.x0)} y={yScale(bin.length / data.length)} 
