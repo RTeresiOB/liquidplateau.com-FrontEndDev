@@ -1,7 +1,8 @@
 /** Rule.js */
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
+import {SeletedPoliticianDispatch} from "../Dashboard"
  
 const Rule = ({
   type, scale, hoverCoord, fullData, height, transform, disableAnimation, ...props
@@ -19,7 +20,21 @@ const Rule = ({
   } catch{
       hoverCoord = -999;
   }
-  var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
+  const SeletedPoliticianDispatchContext = useContext(SeletedPoliticianDispatch);
+  try{
+    if(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx){
+      var selectedPolitician = SeletedPoliticianDispatchContext.value.selectedPoliticianIdx;
+    } else{
+      var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
+    }
+  } catch {
+    var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
+  }
+  console.log("selected",selectedPolitician);
+  /*SeletedPoliticianDispatchContext.value.selectedPoliticianIdx ===null ?
+  argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX)))) :
+  SeletedPoliticianDispatch.value.selectedPoliticianIdx;
+  */
   var coords = [[scale(fullData[selectedPolitician].Ideology),0],[scale(fullData[selectedPolitician].Ideology),-parseFloat(height)]];
   
   const [col, setCol] = React.useState("white")

@@ -9,7 +9,6 @@ export default function ReactRow(props){
     const [textColor, setTextColor] = useState("Black");
 
     useEffect(() =>{
-        console.log(SeletedPoliticianDispatchContext.value);
     setBgColor(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx == parseInt(rowIdx)
                          ? colInterpolate(SeletedPoliticianDispatchContext.value.selectedPoliticianIdeology)
                          : "white");
@@ -18,7 +17,6 @@ export default function ReactRow(props){
                          : "black");
 }, [SeletedPoliticianDispatchContext.value.selectedPoliticianIdx]);
     const colInterpolate = (val) => {
-        console.log(1 - ((2 + parseFloat(val))/4));
         return d3.interpolateRdBu(1 - ((2 + parseFloat(val))/4));
     };
     const onHover = () => {
