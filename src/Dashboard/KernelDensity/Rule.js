@@ -24,11 +24,13 @@ const Rule = ({
   try{
     if(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx){
       var selectedPolitician = SeletedPoliticianDispatchContext.value.selectedPoliticianIdx;
+      hoverCoord=0;
     } else{
       if(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx != 0){ // Terribly hacky but works (ugh)
       var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
       } else{
         var selectedPolitician = SeletedPoliticianDispatchContext.value.selectedPoliticianIdx;
+        hoverCoord=0;
       }
     }
   } catch {
@@ -60,7 +62,17 @@ const Rule = ({
     return(<>
     </>)
   }
-  return <path ref={ref} d={line(coords)} transform={transform} stroke={col} {...props} />;
+  return( 
+    <>
+  <path ref={ref} d={line(coords)} transform={transform} stroke={col} {...props} />;
+    <text x={coords[0][0]+15} y="29"
+            font-family="'Lucida Grande', sans-serif"
+            font-size="12">
+              {hoverCoord != -999 ? fullData[selectedPolitician].ScreenName : "" }
+
+      </text>
+    </>
+  )
 };
  
 export default Rule;
