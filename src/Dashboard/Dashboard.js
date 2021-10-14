@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useReducer } from "react";
 import readPolData from "./KernelDensity/readPolData";
 import KernelDensityChart from "./KernelDensity/KernelDensityChart";
-import PolyTable from "./PolyTable/PolyTable"
+import MemoizedPolyTable from "./PolyTable/PolyTable"
 
 
 export const  SeletedPoliticianDispatch = React.createContext(null);
@@ -23,13 +23,24 @@ export default function Dashboard(props) {
       };
 
     const selectPoliticanReducer = (currentState, idx) =>
-      {
-          return {"selectedPolitician":idx};
+    {
+          if( idx === null ){
+            return {"selectedPoliticianIdx":null,
+            "selectedPoliticanScreen": null,
+            "selectedPoliticianIdeology": null};
+        }
+        else {
+          return {"selectedPoliticianIdx":idx,
+                  "selectedPoliticanScreen": data[idx].ScreenName,
+                  "selectedPoliticianIdeology": data[idx].Ideology};
       }
+    }
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState(null);
-    const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{"selectedPolitician":null});
+    const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{"selectedPolitician":null,
+                                                                                           "selectedPoliticanScreen": null,
+                                                                                           "selectedPoliticianIdeology": null})
     if(data ===null){
         readPolData("data/scores.csv", false).then((result) => {return(result);}).then((result) =>
          {setData(result);});
@@ -50,10 +61,8 @@ export default function Dashboard(props) {
             <>
                 <SeletedPoliticianDispatch.Provider value={{"setter":setSelectedPolitician,
                                                             "value": selectedPolitician}}>
-                    <KernelDensityChart data={data} dimensions={kernelDimensions} 
-                                        politician={selectedPolitician} />
-                    <PolyTable  data={data}
-                                politician={selectedPolitician} />
+                    <KernelDensityChart data={data} dimensions={kernelDimensions} />
+                    <MemoizedPolyTable  data={data}/>
                 </SeletedPoliticianDispatch.Provider>
             </>);
     } else{

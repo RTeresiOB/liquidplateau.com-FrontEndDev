@@ -1,7 +1,7 @@
 import React from "react"
 import Table from "./Table"
 import styled from "styled-components"
-export default function PolyTable(data=null, props){
+function PolyTable(data=null, props){
 
     const Styles = styled.div`
             padding: 1rem;
@@ -70,3 +70,6 @@ export default function PolyTable(data=null, props){
     </Styles>
     )
 }
+
+const MemoizedPolyTable = React.memo(PolyTable);
+export default MemoizedPolyTable;
