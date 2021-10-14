@@ -16,7 +16,7 @@ const Rule = ({
   const argMin = argFact((max, el) => (el[0] < max[0] ? el : max))
   var svg = d3.select("svg#KernelSVG");
   try{
-  var correctedX = hoverCoord - svg.node().getBoundingClientRect().x - 65;
+  var correctedX = hoverCoord - svg.node().getBoundingClientRect().x - 103;
   } catch{
       hoverCoord = -999;
   }
@@ -25,7 +25,11 @@ const Rule = ({
     if(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx){
       var selectedPolitician = SeletedPoliticianDispatchContext.value.selectedPoliticianIdx;
     } else{
+      if(SeletedPoliticianDispatchContext.value.selectedPoliticianIdx != 0){ // Terribly hacky but works (ugh)
       var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
+      } else{
+        var selectedPolitician = SeletedPoliticianDispatchContext.value.selectedPoliticianIdx;
+      }
     }
   } catch {
     var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
@@ -35,7 +39,7 @@ const Rule = ({
   argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX)))) :
   SeletedPoliticianDispatch.value.selectedPoliticianIdx;
   */
-  var coords = [[scale(fullData[selectedPolitician].Ideology),0],[scale(fullData[selectedPolitician].Ideology),-parseFloat(height)]];
+  var coords = [[scale(fullData[selectedPolitician].Ideology)-9,0],[scale(fullData[selectedPolitician].Ideology)-9,-parseFloat(height)]];
   
   const [col, setCol] = React.useState("white")
   React.useEffect(() => {
@@ -52,6 +56,10 @@ const Rule = ({
     }
   }, [scale, hoverCoord, transform, col, selectedPolitician, disableAnimation]);
 
+  if(type===null){
+    return(<>
+    </>)
+  }
   return <path ref={ref} d={line(coords)} transform={transform} stroke={col} {...props} />;
 };
  

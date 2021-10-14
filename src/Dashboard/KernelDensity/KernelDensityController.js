@@ -47,7 +47,7 @@ const useController = ({ data, nthresholds, width, height }) => {
   const yScale = useMemo(() => {
     const indention = (yMax - yMin) * 0.5;
     return d3.scaleLinear()
-      .domain([yMin - indention, yMax + indention])
+      .domain([yMin, yMax])
       .range([height, 0]);
   }, [height, yMin, yMax]);
   const yScaleForAxis = useMemo(
