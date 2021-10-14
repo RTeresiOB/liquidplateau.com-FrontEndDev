@@ -50,7 +50,7 @@ const Rule = ({
     var colCoord = (scale.domain()[1] - fullData[selectedPolitician].Ideology ) /  (scale.domain()[1] - scale.domain()[0])
     setCol(d3.interpolateRdBu(colCoord))
     }
-  }, [scale, hoverCoord, transform, col, disableAnimation]);
+  }, [scale, hoverCoord, transform, col, selectedPolitician, disableAnimation]);
 
   return <path ref={ref} d={line(coords)} transform={transform} stroke={col} {...props} />;
 };
