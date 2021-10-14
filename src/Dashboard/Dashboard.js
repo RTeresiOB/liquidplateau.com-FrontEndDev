@@ -2,10 +2,13 @@
 
 /* Controls orientation and data loading for all dashboard graphs */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import readPolData from "./KernelDensity/readPolData";
 import KernelDensityChart from "./KernelDensity/KernelDensityChart";
 import PolyTable from "./PolyTable/PolyTable"
+
+
+export const  SeletedPoliticianDispatch = React.createContext(null);
 export default function Dashboard(props) {
     // Define dimensions for kernelDensity (this will have to be scaled by window dimensions)
     const kernelDimensions = {
@@ -19,8 +22,14 @@ export default function Dashboard(props) {
         }
       };
 
+    const selectPoliticanReducer = (idx) =>
+      {
+          return {selectedPolitician:idx};
+      }
+
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState(null);
+    const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{selectedPolitician:null});
     if(data ===null){
         readPolData("data/scores.csv", false).then((result) => {return(result);}).then((result) =>
          {setData(result);});
@@ -35,10 +44,15 @@ export default function Dashboard(props) {
     },[data]);
 
     if(isLoaded){
+        console.log(setSelectedPolitician)
         return(
             <>
-                <KernelDensityChart data={data} dimensions={kernelDimensions} />
-                <PolyTable data={data} />
+                <SeletedPoliticianDispatch.Provider value={setSelectedPolitician}>
+                    <KernelDensityChart data={data} dimensions={kernelDimensions} 
+                                        politician={selectedPolitician} />
+                    <PolyTable  data={data}
+                                politician={selectedPolitician} />
+                </SeletedPoliticianDispatch.Provider>
             </>);
     } else{
         return(
