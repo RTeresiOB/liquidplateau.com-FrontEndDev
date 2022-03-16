@@ -1,29 +1,37 @@
 import React from "react"
 import Table from "./Table"
 import styled from "styled-components"
-function PolyTable(data=null, props){
+import useWindowDimensions from "../useWindowDimensions"
 
+function PolyTable(data=null, props){
+    const { height, width } = useWindowDimensions();
+
+    console.log(height, width)
     const Styles = styled.div`
             padding: 1rem;
-            width: 100%;
-            min-width: 700px;
             overflow-y: scroll;
             table {
                 table-layout: fixed;
                 border-collapse: collapse;
                 border-spacing: 0;
-                width: 700px;
-                height: 300px;
-                overflow: auto;
+                width: ${width/2}px;
+                height: ${height/5}px;
+                overflow-y: auto;
+                overflow-x: hidden;
 
                 tbody {
-                    width: 700px;
+                    width: ${width/2}px;
                     display: block;
                     overflow: auto;
-                    height: 300px;
+                    height: ${height/5}px;
+                  }
+
+                  thead{
+                    width: ${width/2}px;
+                    overflow: auto;
                   }
                 tr {
-                    width: 700px;
+                    width: ${width/2}px;
                 :last-child {
                     td {
                     border-bottom: 0;
@@ -31,12 +39,24 @@ function PolyTable(data=null, props){
                 }
                 }
 
-                th,
-                td {
-                width: 350px;
+                th {
+                
+                width: ${width/4}px;
                 margin: 0;
                 padding: 0.5rem;
                 border-right: 1px solid black;
+                font-size: 1vw;
+                border-right: 0;
+              
+                }
+                
+                
+                td {
+                width: ${width/4}px;
+                margin: 0;
+                padding: 0.5rem;
+                border-right: 1px solid black;
+                font-size: 1vw;
 
                 :last-child {
                     border-right: 0;

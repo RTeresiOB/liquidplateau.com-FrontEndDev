@@ -21,7 +21,7 @@ const Axis = ({
     axisGroup.selectAll("text")
       .attr("opacity", 0.5)
       .attr("color", "black")
-      .attr("font-size", "0.75rem");
+      .attr("font-size", ".9em");
   }, [scale, ticks, tickFormat, disableAnimation]);
  
   return <g ref={ref} transform={transform} {...props} />;

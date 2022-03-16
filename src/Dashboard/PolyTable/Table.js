@@ -33,7 +33,7 @@ const floatSort = useMemo(() => {
             <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => { if (column.id === 'Ideology') column.sortType = floatSort;})}
               {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}
+                <th  {...column.getHeaderProps(column.getSortByToggleProps())} >{column.render('Header')}
                     <span>
                         {column.isSorted
                         ? column.isSortedDesc

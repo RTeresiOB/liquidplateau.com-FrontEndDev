@@ -36,12 +36,14 @@ const Rule = ({
   } catch {
     var selectedPolitician = argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX))));
   }
-  console.log("selected",selectedPolitician);
   /*SeletedPoliticianDispatchContext.value.selectedPoliticianIdx ===null ?
   argMin(fullData.map(datum => Math.abs(datum.Ideology - scale.invert(correctedX)))) :
   SeletedPoliticianDispatch.value.selectedPoliticianIdx;
   */
-  var coords = [[scale(fullData[selectedPolitician].Ideology)-9,0],[scale(fullData[selectedPolitician].Ideology)-9,-parseFloat(height)]];
+
+  var coords = type===parseFloat(type) 
+    ? [[scale(type)-9,0],[scale(type)-9,-parseFloat(height)]]
+    : [[scale(fullData[selectedPolitician].Ideology)-9,0],[scale(fullData[selectedPolitician].Ideology)-9,-parseFloat(height)]];
   
   const [col, setCol] = React.useState("white")
   React.useEffect(() => {
@@ -61,7 +63,22 @@ const Rule = ({
   if(type===null){
     return(<>
     </>)
-  }
+  } else if(type===parseFloat(type)){
+    return(
+    <>
+  <path d={line(coords)} transform={transform} stroke={"black"} {...props} />;
+  <g style={{zIndex:999}}>
+  <text x={coords[0][0]+15} y="29"
+            font-family="'Lucida Grande', sans-serif"
+            font-size="12"
+            style={{zIndex:999}}>
+              {hoverCoord != -999 ? "Your score is:"+ type.toFixed(2) : "" }
+
+      </text>
+    </g>
+    </>
+    )
+  } else{
   return( 
     <>
   <path ref={ref} d={line(coords)} transform={transform} stroke={col} {...props} />;
@@ -73,6 +90,7 @@ const Rule = ({
       </text>
     </>
   )
+}
 };
  
 export default Rule;

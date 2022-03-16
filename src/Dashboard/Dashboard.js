@@ -2,18 +2,21 @@
 
 /* Controls orientation and data loading for all dashboard graphs */
 
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useCallback } from "react";
 import readPolData from "./KernelDensity/readPolData";
 import KernelDensityChart from "./KernelDensity/KernelDensityChart";
 import MemoizedPolyTable from "./PolyTable/PolyTable"
-
+import { isCompositeComponentWithType } from "react-dom/test-utils";
+import API from '../api';
+import useWindowDimensions from "./useWindowDimensions"
 
 export const  SeletedPoliticianDispatch = React.createContext(null);
 export default function Dashboard(props) {
     // Define dimensions for kernelDensity (this will have to be scaled by window dimensions)
+    const { height, width } = useWindowDimensions();
     const kernelDimensions = {
-        width: 500,
-        height: 300,
+        width: .35*width,
+        height: .3*height,
         margin: {
           top: 30,
           right: 100,
@@ -22,30 +25,76 @@ export default function Dashboard(props) {
         }
       };
 
-    const selectPoliticanReducer = (currentState, idx) =>
-    {
-        console.log(idx);
-          if( idx === null ){
-              console.log("test1");
-            return {"selectedPoliticianIdx":null,
-            "selectedPoliticanScreen": null,
-            "selectedPoliticianIdeology": null};
+      const tableDimensions = {
+        width: .8*width,
+        height: .3*height,
+        margin: {
+          top: 30,
+          right: 100,
+          bottom: 20,
+          left: 100
         }
-        else {
-          return {"selectedPoliticianIdx":idx,
-                  "selectedPoliticanScreen": data[idx].ScreenName,
-                  "selectedPoliticianIdeology": data[idx].Ideology};
-      }
-    }
-
+      };
+    
     const [isLoaded, setIsLoaded] = useState(false);
     const [data, setData] = useState(null);
     const [isDistLoaded, setIsDistLoaded] = useState(false);
     const [distData, setDistData] = useState(null);
+    const [pcaResult, setPcaResult] = useState(null);
+    const [formState, setFormState] = useState("");
+    const selectPoliticanReducer = useCallback((currentState, arr) =>
+    {
+        const idx = arr[0];
+        const clicked = arr[1];
 
+        if(arr.length > 2 && arr[2] == 1){
+            return({"selectedPoliticianIdx":idx,
+                    "selectedPoliticanScreen": data[idx].ScreenName,
+                    "selectedPoliticianIdeology": data[idx].Ideology,
+                    "selectedPoliticianArray": [],
+                    "selectedPoliticianIdxArray": []});
+        }
+          if( idx !== null ){
+            if(clicked){
+                if(currentState.selectedPoliticianArray.includes(data[idx].ScreenName)){
+                    return({"selectedPoliticianIdx":idx,
+                    "selectedPoliticanScreen": data[idx].ScreenName,
+                    "selectedPoliticianIdeology": data[idx].Ideology,
+                    "selectedPoliticianArray": currentState['selectedPoliticianArray'].filter(name => name != data[idx].ScreenName),
+                    "selectedPoliticianIdxArray": currentState['selectedPoliticianIdxArray'].filter(id => id != idx)});
+                } else{
+                    return({"selectedPoliticianIdx":idx,
+                        "selectedPoliticanScreen": data[idx].ScreenName,
+                        "selectedPoliticianIdeology": data[idx].Ideology,
+                        "selectedPoliticianArray": currentState.selectedPoliticianArray.concat([data[idx].ScreenName]),
+                        "selectedPoliticianIdxArray": currentState.selectedPoliticianIdxArray.concat([idx])});
+                }
+            }
+             else{
+                 console.log(currentState);
+                return({"selectedPoliticianIdx":idx,
+                        "selectedPoliticanScreen": data[idx].ScreenName,
+                        "selectedPoliticianIdeology": data[idx].Ideology,
+                        "selectedPoliticianArray": currentState.selectedPoliticianArray,
+                        "selectedPoliticianIdxArray": currentState.selectedPoliticianIdxArray});
+            }
+        }
+        else {
+            console.log(currentState);
+            return {"selectedPoliticianIdx":null,
+            "selectedPoliticanScreen": null,
+            "selectedPoliticianIdeology": null,
+            "selectedPoliticianArray": currentState.selectedPoliticianArray,
+            "selectedPoliticianIdxArray": currentState.selectedPoliticianIdxArray};
+        }
+            
+      
+    },[data])
     const [selectedPolitician, setSelectedPolitician] = useReducer(selectPoliticanReducer,{"selectedPolitician":null,
                                                                                            "selectedPoliticanScreen": null,
-                                                                                           "selectedPoliticianIdeology": null})
+                                                                                           "selectedPoliticianIdeology": null,
+                                                                                            "selectedPoliticianArray": [],
+                                                                                            "selectedPoliticianIdxArray": []})
     if(data === null){
         readPolData("data/scores.csv", false, false).then((result) => {return(result);}).then((result) =>
          {setData(result);});
@@ -67,39 +116,108 @@ export default function Dashboard(props) {
         }
     },[data, distData]);
 
+    //{"width":"50%",
+    //"position":"fixed",
+    //"left": "0"}
+    //{"width":"48%",
+      //                                      "position":"fixed",
+        //                                    "right": "1.5vw"}
     if(isLoaded & isDistLoaded){
         return(
-            <>
+        <div style={{display: 'flex', flex:1,width: '100%',justifyContent: 'center', 'margin':'auto', overflow:'hidden'}}>
+            <div  style={{'margin':'auto'}}>
+                <div>
                 <h1 style={{"text-align": "center",
-                            "font-size":"2vw"}}>Twitter Ideology Estimates Using PCA of User Following Matrices</h1>
-                <SeletedPoliticianDispatch.Provider value={{"setter":setSelectedPolitician,
-                                                            "value": selectedPolitician}}>
-                    <div>
-                        <div style={{"width":"50%",
-                                      "position":"fixed",
-                                      "left": "0"}}>
-                            <h3 style={{"text-align": "center"}}> Ideology Estimates of Political Accounts </h3>
-                            <div style={{"display": "block",
-                                        "margin-left": "auto",
-                                        "margin-right": "auto"}}>
-                                <KernelDensityChart id="politicians" data={data} 
-                                                    dimensions={kernelDimensions}
-                                                    ruleType={"vertical"} />
-                                <MemoizedPolyTable  data={data}/>
+                'margin':'revert',
+                            "font-size":"2vw"}}>Twitter Ideology Estimates of Politicians and Twitter Users</h1>
+                            <p style={{"text-align": "left",
+                'margin':'revert',
+                            "font-size":"1vw"}}>The following dashboard utilized singular value decomposition (often abbreviated SVD) on a matrix of twitter user following data.
+                                                By selecting a list over 600 primarily political accounts on twitter and identifying which users followed which accounts, the algorithm was able to identify that political ideology was one of the most important axes that explained why users followed some accounts and not others.</p>
+                            <p style={{"text-align": "left",
+                'margin':'revert',
+                            "font-size":"1vw"}}>The histogram "Ideology Estimates of Political Accounts" shows the calculated ideology distribution of our selected politicians. The scores are normalized so that 0 is the mean calculated ideology and 1 is a standard deviation more conservative than the mean, and conversely, -1 is one standard deviation more liberal than the mean.</p>
+                            <p style={{"text-align": "left",
+                            'margin':'revert',
+                                        "font-size":"1vw"}}>
+                                            The associated table "Relative Political Ideology of Politicians" lists the Screen Names of the politicians and their associated ideology scores. 
+                                        </p>
+                            <p style={{"text-align": "left",
+                            'margin':'revert',
+                                        "font-size":"1vw"}}> 
+                                        The histogram "Ideological Distribution of Twitter Users Engaged in BLM Discourse" shows the relative political distribution of twitter users who were engaged in Black Lives Matter discourse. Here a one unit difference also corresponds to a one standard deviation difference in political ideology.
+                                        However, the mean of the distribution was shifted from 0, because the mean twitter user is much more liberal that our mean politician. For this histogram a value of 0 corresponds to a user who only follows George HW Bush (calculated as relatively non-partisan in our table).
+                                         By shifting the data in this manner we can clearly see the ideological landscape of twitter, consisting mostly of liberal and moderate users with very few conservative users.
+                                        </p>    
+                                        <p style={{"text-align": "left",
+                            'margin':'revert',
+                                        "font-size":"1vw"}}> 
+                                        To see how a hypothetical twitter user would be scored, select a group of politicians by clicking their names on the "Relative Polictical Ideology of Politicians" table and press the button "Calculate Your Score!".
+                                        A line on the "Ideological Distribution of Twitter Users Engaged in BLM Discourse" will appear marking the score and position among users in our sample. To clear your selection, press "Clear Selected Politicians" and start again!
+                                        </p>  
+                                        <p style={{"text-align": "left",
+                            'margin':'revert',
+                                        "font-size":"1vw"}}>If you would like to use this model for a study of your own, PLEASE, do not use this dashboard. Instead, send me an email and I would be happy to share the trained model and/or the model-generating code.</p>
+                                        </div>
+                <div className='dashContainer' >
+                    <div>      
+                        <div>
+                            <div className='polyAccountGraphLeft' >
+                                <h3 style={{"text-align": "center",
+                                             
+                                            "font-size":"1.5vw"}}> Ideology Estimates of Political Accounts </h3>
+                                <div style={{"display": "block",
+                                            "margin-left": "auto",
+                                            "margin-right": "auto"}}>
+                                    <SeletedPoliticianDispatch.Provider value={{"setter":setSelectedPolitician,
+                                                                "value": selectedPolitician}}>
+                                        <KernelDensityChart id="politicians" data={data} 
+                                                        dimensions={kernelDimensions}
+                                                        ruleType={"vertical"} />
+                                        <MemoizedPolyTable  data={data} />
+                                    </SeletedPoliticianDispatch.Provider>
+                                </div>
                             </div>
                         </div>
-                        <div style={{"width":"50%",
-                                      "position":"fixed",
-                                      "right": "0"}}>
-                            <h3 style={{"text-align": "center"}}> Ideological Distribution of Twitter Users Engaged in BLM Discourse </h3>
+                        <div className='polyAccountGraph'>
+                            <h3 style={{"text-align": "center",
+                                            "font-size":"1.5vw"}}> Ideological Distribution of Twitter Users Engaged in BLM Discourse </h3>
                             <KernelDensityChart id="users" data={distData}
-                                                dimensions={kernelDimensions}
-                                                ruleType={null} />
+                                                    dimensions={kernelDimensions}
+                                                    ruleType={pcaResult} />
+                            <div style={{'padding':'10px',
+                                                'display': 'block',
+                                                'justify-content': 'center'}}>
+                                <p style={{"justify-content": "center",
+                                                "display": "flex"}}>
+                                                    You are following {selectedPolitician.selectedPoliticianArray.length} politicians </p> 
+                                <div style={{"justify-content": "center",
+                                                "display": "flex"}}>
+                                    <button style={{'font-size':'1vw',
+                                                    'margin':'10px',
+                                                    'padding':'10px'}} onClick={()=>{API.post('/TwitterIdeology/PCATransform',
+                                                    {'following':selectedPolitician.selectedPoliticianArray}).then( result => setPcaResult(result.data.userScore))}} style={{'align-content':'center'}}>Calculate Your Score!</button>
+                                    <button onClick={()=>{setSelectedPolitician([0,0,1]);setPcaResult(null)}}>Clear Selected Politicians</button>
+                                </div>
+                                <div style={{"display":"flex",
+                                                justifyContent:"center",
+                                                "padding":"1vw",
+                                                "padding-left":"3vw"}}>
+                                <textarea value={formState}
+                                            onChange={e => setFormState(e.target.value)}
+                                style={{"font-family": 'Lato',
+                                                    "width":"65%"}}
+                                                    placeholder=" (NOT YET IMPLEMENTED) Enter in a twitter handle here! (Ex. RepSwalwell)"> </textarea>
+                                        <input type="submit" value="Submit" />
+                                        </div>
+                                        
+                                </div>
                         </div>
-                    </div>
-                    
-                </SeletedPoliticianDispatch.Provider>
-            </>);
+                    </div> 
+                </div>
+            </div>
+        </div>
+                    );
     } else if(isLoaded & !isDistLoaded){
         return(
             <>
