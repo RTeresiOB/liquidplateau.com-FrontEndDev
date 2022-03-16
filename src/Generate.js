@@ -55,7 +55,11 @@ createObservers(n){
                     threshold: .99
                   };
                 observer = new IntersectionObserver(this.callback, options);
-                this.observers.push(observer.observe(document.querySelectorAll('path')[i]));
+                try{
+                    this.observers.push(observer.observe(document.querySelectorAll('path')[i]));
+                } catch{
+                    ;
+                }
             //}
         }
     }
@@ -107,9 +111,7 @@ pathGenerateWrapper(id = null){
     id = id;
     function pathGenerate(){
         try{
-            console.log('a');
             if(this.refArray[id].current.getBoundingClientRect().bottom === 0){
-                console.log('b');
                 var coords = {x: this.nodeArray[id].finalString.split('L').split(',')[0],
                             y: Math.sin(theta)*500};
                 return "m"+coords.x+","+coords.y+'L0,0';;
@@ -149,7 +151,6 @@ componentDidMount(){
         <svg className="home"> {this.nodes} </svg> 
         </SvgLines> });
 
-    //sleep(1000).then( () => console.log(document.querySelectorAll('path')[3].toString()));
     sleep(3000).then( () => this.createObservers(this.n));
 }
 
