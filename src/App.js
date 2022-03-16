@@ -19,7 +19,7 @@ const Navigation = () => (
       <li id="homepage"><NavLink exact activeClassName="current" to='/'>home</NavLink></li>
       <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'>about</NavLink></li>
       <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'>contact</NavLink></li>
-      <li id="contactpage"><NavLink exact activeClassName="current" to='/Project'>Project</NavLink></li>
+      <li id="contactpage"><NavLink exact activeClassName="current" to='/Project'>twitter ideology</NavLink></li>
       <li id="resumepage"><NavLink exact activeClassName="current" to='/resume'>resume</NavLink></li>
     </ul>
   </nav>
@@ -48,9 +48,12 @@ class Contact extends Component {
   render() {
     return (
 
-    <div className='contact personal'>
-    <p> shoot me an email: robert.teresi@yale.edu</p>
-    <p> or write me a note: </p>
+    <div className='contact personal' style={{height:'100%', overflow: 'hidden'}}>
+    <p> LinkedIn: <a href="https://www.linkedin.com/in/rteresi">linkedin.com/in/rteresi</a></p>
+    <p> GitHub: <a href="https://www.github.com/rteresiob">RTeresiOB</a></p>
+    <p> Work Email: <a href="mailto:robert.teresi@yale.edu">robert.teresi@yale.edu</a></p>
+    <p> Personal Email: <a href="mailto:rkteresi@gmail.com">rkteresi@gmail.com</a></p>
+    <p> Or write me a note here: </p>
     
     <form action="#" >
 
@@ -69,7 +72,7 @@ class Contact extends Component {
 
 
   <label>Message</label>
-  <textarea id="message" name="message" placeholder="write something.."
+  <textarea id="message" name="message" placeholder="write your message here..."
     onChange={e => this.setState({ message: e.target.value })}
     value={this.state.message}
   ></textarea>
