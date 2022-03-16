@@ -6,7 +6,6 @@ const readPolData = (path, distribution=false, density=true) => {
 
     if(distribution==false){
      return d3.csv(path,  function(data) {
-        //console.log(data);
         return {
             ScreenName:data.screennames,
              Ideology : data.secondcomponent
