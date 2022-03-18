@@ -203,13 +203,15 @@ export default function Dashboard(props) {
                                                 justifyContent:"center",
                                                 "padding":"1vw",
                                                 "padding-left":"3vw"}}>
-                                <textarea value={formState}
-                                            onChange={e => setFormState(e.target.value)}
-                                style={{"font-family": 'Lato',
-                                                    "width":"65%"}}
-                                                    placeholder=" (NOT YET IMPLEMENTED) Enter in a twitter handle here! (Ex. RepSwalwell)"> </textarea>
-                                        <input type="submit" value="Submit" />
-                                        </div>
+                                        <textarea style={{width:'55vw'}}
+                                                    value={formState}
+                                                    onChange={e => setFormState(e.target.value)}
+                                        style={{"font-family": 'Lato',
+                                                            "width":"65%"}}
+                                                            placeholder="Enter in a twitter handle here! (Ex. RepSwalwell)"> </textarea>
+                                        <button onClick={()=>{API.post('/TwitterIdeology/UserLookup',
+                                            {'username': formState}).then( result => setPcaResult(result.data.userScore))}} > Lookup User </button>
+                                </div>
                                         
                                 </div>
                         </div>
