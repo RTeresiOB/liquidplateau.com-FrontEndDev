@@ -392,12 +392,12 @@ svgLines{
 }
 
 #butt:hover{
-  background-color:  rgb(61, 135, 204);
+  background-color:  #1a73ab;
 }
 
 }
 button{
-  background:#9ee4eb;
+  background:#1a73ab;
   color:#fff;
   border:none;
   position:relative;
@@ -409,7 +409,7 @@ button{
 }
 button:hover{
   background:#fff;
-  color:#9ee4eb;
+  color:#1a73ab;
 }
 button:before,button:after{
   content:'';
@@ -418,7 +418,7 @@ button:before,button:after{
   right:0;
   height:2px;
   width:0;
-  background: #9ee4eb;
+  background: #1a73ab;
   transition:400ms ease all;
 }
 button:after{
@@ -457,7 +457,7 @@ button:hover:before,button:hover:after{
   
   
   button{
-    background:#1AAB8A;
+    background:#1a73ab;
     color:#fff;
     border:none;
     position:relative;
@@ -469,7 +469,7 @@ button:hover:before,button:hover:after{
   }
   button:hover{
     background:#fff;
-    color:#1AAB8A;
+    color:#1a73ab;
   }
   button:before,button:after{
     content:'';
@@ -478,7 +478,7 @@ button:hover:before,button:hover:after{
     right:0;
     height:2px;
     width:0;
-    background: #1AAB8A;
+    background: #1a73ab;
     transition:400ms ease all;
   }
   button:after{
@@ -562,7 +562,7 @@ button:hover:before,button:hover:after{
     border-radius: 10px;
     float: left;
     width:50%;
-    height: 65vh;
+    height: 75vh;
     overflow-y:scroll;
     /* width: 65%; */
   }
