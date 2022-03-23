@@ -5,6 +5,7 @@ import Home from './Home';
 import About from './About';
 import Resume from './Resume';
 import Dashboard from './Dashboard/Dashboard'
+import My_Picture from './assets/ThinkingBWCompressed.jpg'
 
 const App = () => (
   <div className='app'>
@@ -14,13 +15,13 @@ const App = () => (
 );
 
 const Navigation = () => (
-  <nav>
-    <ul>
-      <li id="homepage"><NavLink exact activeClassName="current" to='/'>home</NavLink></li>
-      <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'>about</NavLink></li>
-      <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'>contact</NavLink></li>
-      <li id="contactpage"><NavLink exact activeClassName="current" to='/Project'>twitter ideology</NavLink></li>
-      <li id="resumepage"><NavLink exact activeClassName="current" to='/resume'>resume</NavLink></li>
+  <nav >
+    <ul  >
+      <li id="homepage" ><NavLink exact activeClassName="current" to='/'> <p style={{fontSize:'1.8vw'}}>home</p></NavLink></li>
+      <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'><p style={{fontSize:'1.8vw'}}>about</p></NavLink></li>
+      <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'><p style={{fontSize:'1.8vw'}}>contact</p></NavLink></li>
+      <li id="contactpage"><NavLink exact activeClassName="current" to='/Project'><p style={{fontSize:'1.8vw'}}>twitter ideology</p></NavLink></li>
+      <li id="resumepage"><NavLink exact activeClassName="current" to='/resume'><p style={{fontSize:'1.8vw'}}>resume</p></NavLink></li>
     </ul>
   </nav>
 );
@@ -47,40 +48,28 @@ class Contact extends Component {
 
   render() {
     return (
-
-    <div className='contact personal' style={{height:'100%', overflow: 'hidden'}}>
-    <p> LinkedIn: <a href="https://www.linkedin.com/in/rteresi">linkedin.com/in/rteresi</a></p>
-    <p> GitHub: <a href="https://www.github.com/rteresiob">RTeresiOB</a></p>
-    <p> Work Email: <a href="mailto:robert.teresi@yale.edu">robert.teresi@yale.edu</a></p>
-    <p> Personal Email: <a href="mailto:rkteresi@gmail.com">rkteresi@gmail.com</a></p>
-    <p> Or write me a note here: </p>
-    
-    <form action="#" >
-
-    <label>Name</label>
-  <input type=" text" id="name" name="name" placeholder="name..."
-    value={this.state.name}
-    onChange={e => this.setState({ name: e.target.value })}
-  />
-
-
-  <label>Email</label>
-  <input type="email" id="email" name="email" placeholder="email..."
-    value={this.state.email}
-    onChange={e => this.setState({ email: e.target.value })}
-  />
-
-
-  <label>Message</label>
-  <textarea id="message" name="message" placeholder="write your message here..."
-    onChange={e => this.setState({ message: e.target.value })}
-    value={this.state.message}
-  ></textarea>
-
-    <input id = "butt" type="submit" onClick={e => this.handleFormSubmit(e)} value="Submit" />
-  </form >
-  
+<>
+    <div className='contact personal' style={{
+  height: '100%',
+  overflow: 'hidden',
+  display: 'flex',
+  placeContent: 'space-around',
+  flexDirection: 'column',
+  height: '90vh',
+  textAlign: 'center',
+}}>
+    <p style={{fontWeight:550}}> LinkedIn: <a href="https://www.linkedin.com/in/rteresi">linkedin.com/in/rteresi</a></p>
+    <p style={{fontWeight:550}}> GitHub: <a href="https://www.github.com/rteresiob">GitHub.com/RTeresiOB</a></p>
+    <p style={{fontWeight:550}}> Work Email: <a href="mailto:robert.teresi@yale.edu">robert.teresi@yale.edu</a></p>
+    <p style={{fontWeight:550}}> Personal Email: <a href="mailto:rkteresi@gmail.com">rkteresi@gmail.com</a></p>
   </div>
+  <div className='about drawing' style={{alignItems:'center', display:'flex', height:'90vh',}}>
+    <img style={{width:'80%',
+  display: 'block',
+  marginLeft:'auto',
+  marginRight:'auto'}} src={My_Picture} alt="A Photo of Me, Robert Teresi"></img>
+  </div>
+  </>
   );
 }
 }
