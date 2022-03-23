@@ -157,6 +157,9 @@ export default function Dashboard(props) {
                                         </p>  
                                         <p style={{"text-align": "left",
                             'margin':'revert',
+                                        "font-size":"1vw"}}>To look up the score of an active twitter user, enter in their naame into the searchbox and click "Lookup User". This will only work on public twitter users who are following at least 1 political account, and less than 50,000 political accounts. Note that my twitter API access is limited, so please do not abuse this feature. Non-responsiveness of this functionality likely means that my API access is capped for the moment. </p>
+                                        <p style={{"text-align": "left",
+                            'margin':'revert',
                                         "font-size":"1vw"}}>If you would like to use this model for a study of your own, PLEASE, do not use this dashboard. Instead, send me an email and I would be happy to share the trained model and/or the model-generating code.</p>
                                         </div>
                 <div className='dashContainer' >
@@ -202,12 +205,14 @@ export default function Dashboard(props) {
                                 <div style={{"display":"flex",
                                                 justifyContent:"center",
                                                 "padding":"1vw",
-                                                "padding-left":"3vw"}}>
+                                                "padding-left":"3vw",
+                                                margin: '5vh'}}>
                                         <textarea style={{width:'55vw'}}
                                                     value={formState}
                                                     onChange={e => setFormState(e.target.value)}
-                                        style={{"font-family": 'Lato',
-                                                            "width":"65%"}}
+                                        style={{"font-family": 'Avenir',
+                                                            "width":"65%",
+                                                       padding:'5px' }}
                                                             placeholder="Enter in a twitter handle here! (Ex. RepSwalwell)"> </textarea>
                                         <button onClick={()=>{API.post('/TwitterIdeology/UserLookup',
                                             {'username': formState}).then( result => setPcaResult(result.data.userScore))}} > Lookup User </button>
