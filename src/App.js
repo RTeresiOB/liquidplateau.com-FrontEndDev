@@ -18,7 +18,7 @@ const Navigation = () => (
   <nav >
     <ul  >
       <li id="homepage" ><NavLink exact activeClassName="current" to='/'> <p style={{fontSize:'1.8vw'}}>home</p></NavLink></li>
-      <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'><p style={{fontSize:'1.8vw'}}>about</p></NavLink></li>
+      <li id="aboutpage"><NavLink exact activeClassName="current" to='/about'><p style={{fontSize:'1.8vw'}}>about + research</p></NavLink></li>
       <li id="contactpage"><NavLink exact activeClassName="current" to='/contact'><p style={{fontSize:'1.8vw'}}>contact</p></NavLink></li>
       <li id="contactpage"><NavLink exact activeClassName="current" to='/Project'><p style={{fontSize:'1.8vw'}}>twitter ideology</p></NavLink></li>
       <li id="resumepage"><NavLink exact activeClassName="current" to='/resume'><p style={{fontSize:'1.8vw'}}>resume</p></NavLink></li>
