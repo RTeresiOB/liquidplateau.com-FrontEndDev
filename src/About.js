@@ -15,11 +15,11 @@ export default class About extends Component {
       <div className='about personal' style={{alignItems:'center', height:'90vh', display:'flex', overflow:'hidden'}}>
       <CarouselProvider
         naturalSlideWidth={100}
-        naturalSlideHeight={130}
+        naturalSlideHeight={90}
         variableHeight={true}
         totalSlides={3}
         infinite={true}
-        style={{display:'block', width:'100%', height:'65vh', 
+        style={{display:'block', width:'100%', height:'100%', 
       overflow:'hidden',}}
       >
         <Slider>
