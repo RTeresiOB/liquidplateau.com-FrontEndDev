@@ -198,7 +198,7 @@ export default function Dashboard(props) {
                                                 "display": "flex"}}>
                                     <button style={{'font-size':'1vw',
                                                     'margin':'10px',
-                                                    'padding':'10px'}} onClick={()=>{API.post('/TwitterIdeology/PCATransform',
+                                                    'padding':'10px'}} onClick={()=>{API.post('/TwitterIdeology',
                                                     {'following':selectedPolitician.selectedPoliticianArray}).then( result => setPcaResult(result.data.userScore))}} style={{'align-content':'center'}}>Calculate Your Score!</button>
                                     <button onClick={()=>{setSelectedPolitician([0,0,1]);setPcaResult(null)}}>Clear Selected Politicians</button>
                                 </div>
@@ -214,7 +214,7 @@ export default function Dashboard(props) {
                                                             "width":"65%",
                                                        padding:'5px' }}
                                                             placeholder="Enter in a twitter handle here! (Ex. RepSwalwell)"> </textarea>
-                                        <button onClick={()=>{API.post('/TwitterIdeology/UserLookup',
+                                        <button onClick={()=>{API.post('/TwitterIdeology',
                                             {'username': formState}).then( result => setPcaResult(result.data.userScore))}} > Lookup User </button>
                                 </div>
                                         
