@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://www.liquidplateau.com'
+  baseURL: 'https://www.liquidplateau.com'
 });
